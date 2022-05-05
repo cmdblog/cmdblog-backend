@@ -22,7 +22,13 @@ from rest_framework import routers, serializers, viewsets
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    """docstring
+    django rest freamworkで追加になった要素
+    """
     class Meta:
+        """docstring
+        django rest freamwork setups
+        """
         model = User
         fields = ['url', 'username', 'email', 'is_staff']
 
@@ -30,6 +36,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    """docstring
+    django rest freamwork setups
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
