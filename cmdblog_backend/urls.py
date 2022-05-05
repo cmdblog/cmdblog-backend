@@ -25,7 +25,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     """docstring
     django rest freamworkで追加になった要素
     """
-    class Meta:
+    class Meta:  # pylint: disable:too-few-public-methods
         """docstring
         django rest freamwork setups
         """
@@ -35,7 +35,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 # ViewSets define the view behavior.
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):  # pylint: disable:too-many-ancestors
     """docstring
     django rest freamwork setups
     """
