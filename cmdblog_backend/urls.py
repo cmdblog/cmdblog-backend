@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.urls import include, path
-from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
+from django.contrib.auth import get_user_model
 from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
@@ -25,21 +25,21 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     """docstring
     django rest frameworkで追加になった要素
     """
-    class Meta:  # pylint: disable=too-few-public-methods
+    class Meta:
         """docstring
         django rest framework setups
         """
-        model = User
+        model = get_user_model()
         fields = ['url', 'username', 'email', 'is_staff']
 
 # ViewSets define the view behavior.
 
 
-class UserViewSet(viewsets.ModelViewSet):  # pylint: disable=too-many-ancestors
+class UserViewSet(viewsets.ModelViewSet):
     """docstring
     django rest framework setups
     """
-    queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
 
