@@ -1,11 +1,16 @@
-
+"""docstring
+API test
+"""
 from django.test import TestCase
-from django.utils import timezone
 
 
 class RootTests(TestCase):
+    """docstring
+    全般的なテストについておこなう。
+    """
+
     def test_root_returns_200(self):
-        """
+        """docstring
         'URL/' は200レスポンスを返す。
         """
 
