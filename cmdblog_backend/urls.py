@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.urls import include, path
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
 from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
