@@ -1,7 +1,7 @@
 [MASTER]
 ignore-paths=.*/migrations
 load-plugins=pylint_django
-django-settings-module=cmdblog_backend.setting
+#django-settings-module=cmdblog_backend.setting
 [DESIGN]
 max-parents=15
 

@@ -18,7 +18,7 @@ jobs:
       - name: install dependencies
         run: pip install -r requirements.txt -r requirements_dev.txt
       - name: lint
-        run: cd ../ && pylint cmdblog_backend
+        run: pylint cmdblog_backend
 
   test:
     runs-on: ubuntu-latest
