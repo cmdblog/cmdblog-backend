@@ -1,4 +1,4 @@
-.PHONY: check-all lint test gen-schema
+.PHONY: check-all lint test openapi-schema.yaml
 
 
 check-all: lint test
@@ -9,5 +9,5 @@ lint:
 test:
 	python manage.py test
 
-gen-schema:
+openapi-schema.yaml:
 	python manage.py generateschema --file openapi-schema.yaml
