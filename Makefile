@@ -11,3 +11,4 @@ test:
 
 openapi-schema.yaml:
 	python manage.py generateschema --file openapi-schema.yaml
+	sed -i "s/version: ''/version: '$(TAG)'/" openapi-schema.yaml
