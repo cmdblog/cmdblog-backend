@@ -1,0 +1,45 @@
+---
+name: cmdblog-release
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: cmdblog-backend
+      - uses: actions/checkout@v2
+        with:
+          repository: cmdblog/cmdblog-schema
+          path: cmdblog-schema
+      - name: git config
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "Github Action"
+      - name: set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: install dependencies
+        run: pip install -r requirements.txt -r requirements_dev.txt
+        working-directory: cmdblog-backend
+      - name: generate schema
+        run: make TAG=${{ github.ref }} openapi-schema.yaml
+        working-directory: cmdblog-backend
+      - name: copy schema file
+        run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
+      - name: commit and push
+        run: |
+          git add openapi-schema.yaml
+          git commit -m "tag: ${{ github.ref }}"
+          git push
+        working-directory: cmdblog-schema
+      - name: create release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
