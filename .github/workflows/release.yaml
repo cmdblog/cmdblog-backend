@@ -22,7 +22,7 @@ jobs:
       - name: set up git
         run: |
           git config --global user.email "cmdblog-mu@github.com"
-          git config --global user.name "cmdblog Machine Use
+          git config --global user.name "cmdblog Machine User"
       - name: set up python
         uses: actions/setup-python@v2
         with:
