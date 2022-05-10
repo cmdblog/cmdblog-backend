@@ -36,7 +36,7 @@ jobs:
           cat openapi-schema.yaml
         working-directory: cmdblog-backend
       - name: copy schema file
-        run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
+        run: cp -f cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
       - name: commit and push
         run: |
           git status 2 &> 1
