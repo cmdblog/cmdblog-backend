@@ -39,7 +39,7 @@ jobs:
         run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
       - name: commit and push
         run: |
-          git status
+          git status 2 &> 1
           git add openapi-schema.yaml
           git commit -m "version: ${{ env.TAG }}"
           git push
