@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: cmdblog-backend
+     - name: get TAG
+        run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: actions/checkout@v2
         with:
           repository: cmdblog/cmdblog-schema
@@ -29,14 +31,14 @@ jobs:
         run: pip install -r requirements.txt -r requirements_dev.txt
         working-directory: cmdblog-backend
       - name: generate schema
-        run: make TAG=${GITHUB_REF##*/} openapi-schema.yaml
+        run: make TAG=${{ env.TAG }} openapi-schema.yaml
         working-directory: cmdblog-backend
       - name: copy schema file
         run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
       - name: commit and push
         run: |
           git add openapi-schema.yaml
-          git commit -m "version: ${GITHUB_REF##*/}"
+          git commit -m "version: ${{ env.TAG }}"
           git push
         working-directory: cmdblog-schema
       - name: create release
@@ -44,6 +46,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MACHINE_USER_PAT }}
         with:
-          tag_name: ${GITHUB_REF##*/}
-          release_name: Release ${GITHUB_REF##*/}
+          tag_name: ${{ env.TAG }}
+          release_name: Release ${{ env.TAG }}
           repo: cmdblog/cmdblog-schema
