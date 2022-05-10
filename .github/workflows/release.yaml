@@ -37,8 +37,6 @@ jobs:
       - name: copy schema file
         run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
       - name: commit and push
-        env:
-          GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           git add openapi-schema.yaml
           git commit -m "version: ${{ steps.tag_info.output.TAG }}"
