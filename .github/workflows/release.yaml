@@ -45,10 +45,6 @@ jobs:
           git push
         working-directory: cmdblog-schema
       - name: create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.MACHINE_USER_PAT }}
-        with:
-          tag_name: ${{ env.TAG }}
-          release_name: Release ${{ env.TAG }}
-          repo: cmdblog/cmdblog-schema
+        run: |
+          echo "${{ secrets.MACHINE_USER_PAT }}" | gh auth login --with-token
+          gh release create --repo cmdblog/cmdblog-schema ${{ env.TAG }}
