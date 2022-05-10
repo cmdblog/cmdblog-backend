@@ -9,9 +9,6 @@ jobs:
   update-schema:
     runs-on: ubuntu-latest
     steps:
-      - name: get tag name
-        id: tag_info
-        run: echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
       - uses: actions/checkout@v2
         with:
           path: cmdblog-backend
@@ -32,18 +29,21 @@ jobs:
         run: pip install -r requirements.txt -r requirements_dev.txt
         working-directory: cmdblog-backend
       - name: generate schema
-        run: make TAG=${{ github.ref }} openapi-schema.yaml
+        run: make TAG=${GITHUB_REF##*/} openapi-schema.yaml
         working-directory: cmdblog-backend
       - name: copy schema file
         run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
       - name: commit and push
         run: |
           git add openapi-schema.yaml
-          git commit -m "version: ${{ steps.tag_info.output.TAG }}"
+          git commit -m "version: ${GITHUB_REF##*/}"
           git push
         working-directory: cmdblog-schema
       - name: create release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MACHINE_USER_PAT }}
         with:
-          tag_name: ${{ steps.tag_info.output.TAG }}
-          release_name: Release ${{ steps.tag_info.output.TAG }}
+          tag_name: ${GITHUB_REF##*/}
+          release_name: Release ${GITHUB_REF##*/}
+          repo: cmdblog/cmdblog-schema
