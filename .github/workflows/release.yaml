@@ -31,7 +31,9 @@ jobs:
         run: pip install -r requirements.txt -r requirements_dev.txt
         working-directory: cmdblog-backend
       - name: generate schema
-        run: make TAG=${{ env.TAG }} openapi-schema.yaml
+        run: |
+          make TAG=${{ env.TAG }} openapi-schema.yaml
+          cat openapi-schema.yaml
         working-directory: cmdblog-backend
       - name: copy schema file
         run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
