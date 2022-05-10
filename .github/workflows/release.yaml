@@ -6,9 +6,12 @@ on:
       - "v*"
 
 jobs:
-  lint:
+  update-schema:
     runs-on: ubuntu-latest
     steps:
+      - name: get tag name
+        id: tag_info
+        run: echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
       - uses: actions/checkout@v2
         with:
           path: cmdblog-backend
@@ -40,11 +43,11 @@ jobs:
           GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           git add openapi-schema.yaml
-          git commit -m "tag: ${{ github.ref }}"
+          git commit -m "tag: ${{ steps.tag_info.output.TAG}}"
           git push
         working-directory: cmdblog-schema
       - name: create release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.tag_info.output.TAG }}
+          release_name: Release ${{ steps.tag_info.output.TAG }}
