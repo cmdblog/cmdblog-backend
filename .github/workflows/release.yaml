@@ -23,9 +23,6 @@ jobs:
         run: |
           git config --global user.email "cmdblog-mu@github.com"
           git config --global user.name "cmdblog Machine Use
-          echo ${{ secrets.SCHEMA_REPO_DEPLOY_KEY }}" > deploy_key.pem
-          chmod 600 deploy_key.pem
-        working-directory: cmdblog-schema
       - name: set up python
         uses: actions/setup-python@v2
         with:
@@ -38,12 +35,14 @@ jobs:
         working-directory: cmdblog-backend
       - name: copy schema file
         run: cp cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
-      - name: commit and push
+      - name: commit and push and release
         env:
           GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           git add openapi-schema.yaml
-          git commit -m "tag: ${{ steps.tag_info.output.TAG}}"
+          git commit -m "tag: ${{ steps.tag_info.output.TAG }}"
+          echo ${{ secrets.SCHEMA_REPO_DEPLOY_KEY }}" > deploy_key.pem
+          chmod 600 deploy_key.pem
           git push
         working-directory: cmdblog-schema
       - name: create release
