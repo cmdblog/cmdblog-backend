@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: cmdblog-backend
-     - name: get TAG
+      - name: get TAG
         run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: actions/checkout@v2
         with:
