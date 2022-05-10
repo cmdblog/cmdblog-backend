@@ -19,6 +19,7 @@ jobs:
         with:
           repository: cmdblog/cmdblog-schema
           path: cmdblog-schema
+          ssh-key: "${{ secrets.SCHEMA_REPO_DEPLOY_KEY }}"
       - name: set up git
         run: |
           git config --global user.email "cmdblog-mu@github.com"
@@ -40,9 +41,7 @@ jobs:
           GIT_SSH_COMMAND: ssh -i deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           git add openapi-schema.yaml
-          git commit -m "tag: ${{ steps.tag_info.output.TAG }}"
-          echo "${{ secrets.SCHEMA_REPO_DEPLOY_KEY }}" > deploy_key.pem
-          chmod 600 deploy_key.pem
+          git commit -m "version: ${{ steps.tag_info.output.TAG }}"
           git push
         working-directory: cmdblog-schema
       - name: create release
