@@ -1,8 +1,9 @@
 """docstring
 API test
 """
-from django.test import TestCase
+
 import json
+from django.test import TestCase
 
 
 class RootTests(TestCase):
