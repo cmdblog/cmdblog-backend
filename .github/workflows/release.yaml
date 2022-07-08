@@ -1,0 +1,50 @@
+---
+name: cmdblog-release
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  update-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: cmdblog-backend
+      - name: get TAG
+        run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+        with:
+          repository: cmdblog/cmdblog-schema
+          path: cmdblog-schema
+          ssh-key: "${{ secrets.SCHEMA_REPO_DEPLOY_KEY }}"
+      - name: set up git
+        run: |
+          git config --global user.email "cmdblog-mu@github.com"
+          git config --global user.name "cmdblog Machine User"
+      - name: set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: install dependencies
+        run: pip install -r requirements.txt -r requirements_dev.txt
+        working-directory: cmdblog-backend
+      - name: generate schema
+        run: |
+          make TAG=${{ env.TAG }} openapi-schema.yaml
+          cat openapi-schema.yaml
+        working-directory: cmdblog-backend
+      - name: copy schema file
+        run: cp -f cmdblog-backend/openapi-schema.yaml cmdblog-schema/openapi-schema.yaml
+      - name: commit and push
+        run: |
+          git status 2>&1
+          git add openapi-schema.yaml
+          git commit -m "version: ${{ env.TAG }}"
+          git push
+        working-directory: cmdblog-schema
+      - name: create release
+        run: |
+          echo "${{ secrets.MACHINE_USER_PAT }}" | gh auth login --with-token
+          gh release create --repo cmdblog/cmdblog-schema ${{ env.TAG }}
