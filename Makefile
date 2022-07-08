@@ -1,4 +1,4 @@
-.PHONY: check-all lint test
+.PHONY: check-all lint test openapi-schema.yaml
 
 
 check-all: lint test
@@ -8,3 +8,7 @@ lint:
 
 test:
 	python manage.py test
+
+openapi-schema.yaml:
+	python manage.py generateschema --file openapi-schema.yaml
+	sed -i "s/version: ''/version: '$(TAG)'/" openapi-schema.yaml
