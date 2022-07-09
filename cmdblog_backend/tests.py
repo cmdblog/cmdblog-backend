@@ -4,6 +4,7 @@ API test
 
 import json
 from django.test import TestCase
+from ._version import __version__
 
 
 class RootTests(TestCase):
@@ -34,4 +35,4 @@ class VersionTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         returned_json = json.loads(response.content)
-        self.assertEqual(returned_json['version'], "DUMMY_VERSION")
+        self.assertEqual(returned_json['version'], __version__)

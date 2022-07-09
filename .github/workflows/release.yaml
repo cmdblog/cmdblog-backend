@@ -30,6 +30,10 @@ jobs:
       - name: install dependencies
         run: pip install -r requirements.txt -r requirements_dev.txt
         working-directory: cmdblog-backend
+      - name: set version
+        run: |
+          make TAG=${{ env.TAG }} set-version
+        working-directory: cmdblog-backend
       - name: generate schema
         run: |
           make TAG=${{ env.TAG }} openapi-schema.yaml
