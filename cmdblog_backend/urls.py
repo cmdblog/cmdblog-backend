@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib.auth import get_user_model
 from rest_framework import routers, serializers, viewsets
+from .views import version
+
 
 # Serializers define the API representation.
 
@@ -47,8 +49,9 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
-
+# TODO: verison が、openapi-schemaに反映されるような書き方をする。
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('version', version, name='version')
 ]
